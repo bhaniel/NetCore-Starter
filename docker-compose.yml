@@ -1,0 +1,20 @@
+version: "3.2"
+services:
+  web:
+    # build: .
+    image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - VERSION=test
+    ports:
+      - "8080:80"
+      - "5000:5000"
+      - "5001:5001"
+    working_dir: /usr/src/app
+    volumes:
+      - logs-volume:/var/log/myapplog
+      - ./src:/usr/src/app
+    entrypoint: ["sh" , "-c" , "dotnet restore && dotnet watch run 2>&1 |tee /var/log/myapplog/app.log"]
+
+volumes: 
+  logs-volume:
